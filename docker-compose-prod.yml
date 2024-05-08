@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  cms-nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: cms-nginx-image
+    container_name: cms-nginx-container
+    ports:
+      - "8080:80"
+    networks:
+      - internal-network
+  cms-php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    image: cms-php-server-image
+    container_name: cms-php-container
+    networks:
+      - internal-network
+
+networks:
+  internal-network:
+    driver: bridge 

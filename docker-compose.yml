@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  cms-nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    image: cms-nginx-image
+    container_name: cms-nginx-container
+    ports:
+      - "8080:80"
+    networks:
+      - internal-network
+    volumes:
+      - ./public/:/var/www/html/
+      - ./logs/nginx:/var/log/nginx/
+  cms-php:
+    build:
+      context: .
+      dockerfile: php/Dockerfile
+    image: cms-php-server-image
+    secrets: 
+      - db_secrets
+    container_name: cms-php-container
+    networks:
+      - internal-network
+    volumes:
+      - ./public/:/var/www/html/
+      - ./logs/php.log:/var/log/fpm-php.www.log
+
+networks:
+  internal-network:
+    driver: bridge 
+
+secrets:
+  db_secrets:
+    file: ./secrets/db_secrets.env
