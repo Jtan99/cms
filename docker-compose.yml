@@ -4,7 +4,7 @@ services:
   cms-nginx:
     build:
       context: .
-      dockerfile: nginx/Dockerfile
+      dockerfile: docker/nginx/Dockerfile
     image: cms-nginx-image
     container_name: cms-nginx-container
     ports:
@@ -17,15 +17,15 @@ services:
   cms-php:
     build:
       context: .
-      dockerfile: php/Dockerfile
+      dockerfile: docker/php/Dockerfile
     image: cms-php-server-image
-    secrets: 
+    secrets:
       - db_secrets
     container_name: cms-php-container
     networks:
       - internal-network
     volumes:
-      - ./public/:/var/www/html/
+      # - ./php/src:/var/www/html/
       - ./logs/php.log:/var/log/fpm-php.www.log
 
 networks:
